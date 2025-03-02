@@ -7,6 +7,17 @@ public class Chat {
     private LocalDateTime momentIntime;
     private Long channelId;
 
+    public Chat(){
+
+    }
+
+    public Chat(String text, LocalDateTime momentIntime, Long channelId) {
+        this.text= text;
+        this.momentIntime= momentIntime;
+        this.channelId= channelId;
+    }
+
+
     public String getText() {
         return text;
     }
@@ -29,5 +40,14 @@ public class Chat {
 
     public void setChannelId(Long channelId) {
         this.channelId = channelId;
+    }
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "text='" + text + '\'' +
+                ", momentIntime=" + momentIntime +
+                ", channelId=" + channelId +
+                '}';
     }
 }
