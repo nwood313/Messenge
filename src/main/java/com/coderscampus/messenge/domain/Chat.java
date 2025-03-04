@@ -4,49 +4,41 @@ import java.time.LocalDateTime;
 
 public class Chat {
     private String text;
-    private LocalDateTime momentIntime;
+    private LocalDateTime momentInTime;
     private Long channelId;
 
     public Chat(){
 
     }
-
-    public Chat(String text, LocalDateTime momentIntime, Long channelId) {
+    public Chat(String text, LocalDateTime momentInTime, Long channelId) {
         this.text= text;
-        this.momentIntime= momentIntime;
+        this.momentInTime = momentInTime;
         this.channelId= channelId;
     }
-
 
     public String getText() {
         return text;
     }
-
     public void setText(String text) {
         this.text = text;
     }
-
-    public LocalDateTime getMomentIntime() {
-        return momentIntime;
+    public LocalDateTime getMomentInTime() {
+        return momentInTime;
     }
-
-    public void setMomentIntime(LocalDateTime momentIntime) {
-        this.momentIntime = momentIntime;
+    public void setMomentInTime(LocalDateTime momentInTime) {
+        this.momentInTime = momentInTime;
     }
-
     public Long getChannelId() {
         return channelId;
     }
-
     public void setChannelId(Long channelId) {
         this.channelId = channelId;
     }
-
     @Override
     public String toString() {
         return "Chat{" +
                 "text='" + text + '\'' +
-                ", momentIntime=" + momentIntime +
+                ", momentIntime=" + momentInTime +
                 ", channelId=" + channelId +
                 '}';
     }
