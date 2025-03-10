@@ -1,4 +1,4 @@
-package com.coderscampus.messenge.domain;
+package com.coderscampus.messenge.dto;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ public class Channel {
     }
 
     public Channel (Long id, String name, List <User> users, boolean isPrivate){
-        this.id= id;
+        this.id = id;
         this.name = name;
         this.users = users;
-        this.isPrivate=isPrivate;
+        this.isPrivate = isPrivate;
     }
 
     public Long getId() {

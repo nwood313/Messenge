@@ -1,4 +1,4 @@
-package com.coderscampus.messenge.domain;
+package com.coderscampus.messenge.dto;
 
 import jakarta.persistence.*;
 
@@ -10,7 +10,7 @@ public class User {
 
     private String username;
     private String password;
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY )
+    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
     public Long getUserId() {
         return userId;
     }
@@ -42,4 +42,6 @@ public class User {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+
 }

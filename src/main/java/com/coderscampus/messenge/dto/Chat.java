@@ -1,4 +1,4 @@
-package com.coderscampus.messenge.domain;
+package com.coderscampus.messenge.dto;
 
 import java.time.LocalDateTime;
 
