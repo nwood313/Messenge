@@ -3,7 +3,7 @@ package com.coderscampus.messenge.dto;
 import java.util.List;
 
 public class Channel {
-    private Long id;
+    private Long channelId;
     private String name;
     private List <User> users;
     boolean isPrivate;
@@ -12,19 +12,19 @@ public class Channel {
 
     }
 
-    public Channel (Long id, String name, List <User> users, boolean isPrivate){
-        this.id = id;
+    public Channel (Long channelId, String name, List <User> users, boolean isPrivate){
+        this.channelId = channelId;
         this.name = name;
         this.users = users;
         this.isPrivate = isPrivate;
     }
 
-    public Long getId() {
-        return id;
+    public Long getchannelId() {
+        return channelId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
     }
 
     public String getName() {
@@ -54,7 +54,7 @@ public class Channel {
     @Override
     public String toString() {
         return "Channel{" +
-                "id=" + id +
+                "channelId=" + channelId +
                 ", name='" + name + '\'' +
                 ", users=" + users +
                 ", isPrivate=" + isPrivate +
