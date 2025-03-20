@@ -4,7 +4,7 @@ package com.coderscampus.messenge.web;
 import org.springframework.stereotype.Controller;
 
 
-import com.coderscampus.assignment14.domain.ChatMessage;
+import com.coderscampus.messenge.dto.Chat;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;

@@ -5,7 +5,6 @@ import com.coderscampus.messenge.dto.User;
 import com.coderscampus.messenge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
-
 
     @PostMapping ("/exists")
     @ResponseBody  //Tells spring to behave like a rest controller (returns an object rather than a view (model))
