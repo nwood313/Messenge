@@ -3,6 +3,7 @@ package com.coderscampus.messenge.service;
 import com.coderscampus.messenge.dto.Chat;
 import com.coderscampus.messenge.repository.ChatRepository;
 import com.coderscampus.messenge.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -10,15 +11,16 @@ import java.util.List;
 public class ChatService {
     private final UserRepository userRepo;
     private final ChatRepository chatRepo;
-
+    @Autowired
     public ChatService(UserRepository userRepo,
                        ChatRepository chatRepo) {
         this.userRepo = userRepo;
         this.chatRepo = chatRepo;
     }
 
-    public void sendChats(Chat chat) {
+    public Chat sendChats(Chat chat) {
         chatRepo.save(chat);
+        return chat;
     }
 
     public List<Chat> getChats(Long channelId) {

@@ -11,15 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping ("/users")
 public class UserController {
-    @Autowired
-    UserService userService;
-
-    @PostMapping ("/exists")
-    @ResponseBody  //Tells spring to behave like a rest controller (returns an object rather than a view (model))
-    public Boolean postExists (@RequestBody User user) {
-        user = userService.findByUsername(user.getUsername());
-        return (user!= null);
-    }
+    @Autowired UserService userService;
 
     @GetMapping("/validateUsername")
     @ResponseBody
