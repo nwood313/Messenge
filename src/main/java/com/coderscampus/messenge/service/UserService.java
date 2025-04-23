@@ -20,4 +20,11 @@ public class UserService {
     public Optional<User> findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+
+    public User createUser(String name, String username, String password) {
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setPassword(password);
+        return userRepo.save(newUser);
+    }
 }
