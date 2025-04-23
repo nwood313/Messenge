@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ChannelController {
@@ -29,7 +30,7 @@ public class ChannelController {
     }
     @GetMapping ("/channels/{channelId}")
     public String getChannel(ModelMap model, @PathVariable Long channelId) {
-        Channel channel = channelService.findChannelById(channelId);
+        Optional<Channel> channel = channelService.getChannel(channelId);
         List<Chat> chatsByChannel =
                 chatService.getChats(channelId);
                 model.put("chat", chatsByChannel);

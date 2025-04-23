@@ -21,7 +21,7 @@ public class UserService {
         return userRepo.findByUsername(username);
     }
 
-    public User createUser(String name, String username, String password) {
+    public User createUser(String username, String password) {
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(password);

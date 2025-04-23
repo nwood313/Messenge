@@ -19,8 +19,9 @@ public class ChatService {
         this.chatRepo = chatRepo;
     }
 
-    public void sendChats(Chat chat) {
+    public Chat sendChats(Chat chat) {
         chatRepo.save(chat);
+        return chat;
     }
 
     public List<Chat> getChats(Long channelId) {

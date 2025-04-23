@@ -19,7 +19,7 @@ public class Channel {
         this.isPrivate = isPrivate;
     }
 
-    public Long getchannelId() {
+    public Long getChannelId() {
         return channelId;
     }
 
