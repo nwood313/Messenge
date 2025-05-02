@@ -1,24 +1,40 @@
 package com.coderscampus.messenge.dto;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
 public class Channel {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long channelId;
+
     private String name;
+    @ManyToMany(mappedBy = "channels")
     private List <User> users;
-    boolean isPrivate;
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    private List <Chat> chats = new ArrayList<>();
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
 
     public Channel(){
 
     }
 
-    public Channel (Long channelId, String name, List <User> users, boolean isPrivate){
+    public Channel (Long channelId, String name, List <User> users, List <Chat> chats){
         this.channelId = channelId;
         this.name = name;
         this.users = users;
-        this.isPrivate = isPrivate;
     }
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getChannelId() {
         return channelId;
     }
@@ -34,7 +50,7 @@ public class Channel {
     public void setName(String name) {
         this.name = name;
     }
-
+    @ManyToMany
     public List<User> getUsers() {
         return users;
     }
@@ -42,14 +58,7 @@ public class Channel {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
-    public boolean isPrivate() {
-        return isPrivate;
-    }
-
-    public void setPrivate(boolean aPrivate) {
-        isPrivate = aPrivate;
-    }
+    
 
     @Override
     public String toString() {
@@ -57,7 +66,6 @@ public class Channel {
                 "channelId=" + channelId +
                 ", name='" + name + '\'' +
                 ", users=" + users +
-                ", isPrivate=" + isPrivate +
                 '}';
     }
 }

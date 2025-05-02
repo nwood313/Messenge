@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "users")
+//@Table(name = "users")
 public class User {
 
     private Long userId;
@@ -19,7 +19,7 @@ public class User {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    @Column(unique = true)
+//    @Column(unique = true)
     public String getUsername() {
         return username;
     }

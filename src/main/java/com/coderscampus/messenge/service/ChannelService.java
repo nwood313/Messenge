@@ -10,9 +10,11 @@ import java.util.Optional;
 
 @Service
 public class ChannelService {
-    private final ChannelRepository channelRepository;
 
     @Autowired
+    ChannelRepository channelRepository;
+
+
     public ChannelService(ChannelRepository channelRepository) {
         this.channelRepository = channelRepository;
     }
