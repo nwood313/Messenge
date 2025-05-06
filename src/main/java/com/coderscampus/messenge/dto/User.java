@@ -1,9 +1,9 @@
 package com.coderscampus.messenge.dto;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 
 
-@Entity
+//@Entity
 //@Table(name = "users")
 public class User {
 
@@ -11,7 +11,7 @@ public class User {
     private String username;
     private String password;
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+//    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
     public Long getUserId() {
         return userId;
     }
@@ -39,7 +39,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

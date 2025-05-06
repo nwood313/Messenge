@@ -31,7 +31,7 @@ public class ChannelController {
     @GetMapping ("/channels/{channelId}")
     public String getChannel(ModelMap model, @PathVariable Long channelId) {
         Optional<Channel> channel = channelService.getChannel(channelId);
-        List<Chat> chatsByChannel =
+        Optional<List<Chat>> chatsByChannel =
                 chatService.getChats(channelId);
                 model.put("chat", chatsByChannel);
                 model.put("channel", channel);

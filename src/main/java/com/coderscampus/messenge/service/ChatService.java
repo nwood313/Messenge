@@ -6,6 +6,7 @@ import com.coderscampus.messenge.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChatService {
@@ -19,12 +20,12 @@ public class ChatService {
         this.chatRepo = chatRepo;
     }
 
-    public Chat sendChats(Chat chat) {
-        chatRepo.save(chat);
-        return chat;
-    }
+//    public Chat sendChats(Chat chat) {
+//        chatRepo.save(chat);
+//        return chat;
+//    }
 
-    public List<Chat> getChats(Long channelId) {
-        return chatRepo.findByChannelId(channelId);
+    public Optional<List<Chat>> getChats(Long channelId) {
+        return chatRepo.findMessagesByChannel(channelId);
     }
 }

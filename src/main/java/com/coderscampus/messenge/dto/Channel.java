@@ -1,20 +1,20 @@
 package com.coderscampus.messenge.dto;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
+//@Entity
 public class Channel {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long channelId;
 
     private String name;
-    @ManyToMany(mappedBy = "channels")
+    //@ManyToMany(mappedBy = "channels")
     private List <User> users;
-    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
     private List <Chat> chats = new ArrayList<>();
 
     public List<Chat> getChats() {
@@ -34,7 +34,7 @@ public class Channel {
         this.name = name;
         this.users = users;
     }
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getChannelId() {
         return channelId;
     }
@@ -50,7 +50,7 @@ public class Channel {
     public void setName(String name) {
         this.name = name;
     }
-    @ManyToMany
+    //@ManyToMany
     public List<User> getUsers() {
         return users;
     }
@@ -58,7 +58,7 @@ public class Channel {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-    
+
 
     @Override
     public String toString() {
@@ -66,6 +66,7 @@ public class Channel {
                 "channelId=" + channelId +
                 ", name='" + name + '\'' +
                 ", users=" + users +
+                ", chats=" + chats +
                 '}';
     }
 }

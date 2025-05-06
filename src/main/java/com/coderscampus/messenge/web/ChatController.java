@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Optional;
+
 import com.coderscampus.messenge.dto.Chat;
 import com.coderscampus.messenge.service.ChatService;
 
@@ -16,8 +18,8 @@ public class ChatController {
     private ChatService chatService;
 
     @GetMapping("/chats/{channelId}")
-    public List<Chat> getChatsByChannelId(@PathVariable Long channelId) {
-        List<Chat> channelChats = chatService.getChats(channelId);
+    public Optional<List<Chat>> getChatsByChannelId(@PathVariable Long channelId) {
+        Optional<List<Chat>> channelChats = chatService.getChats(channelId);
         return channelChats;
     }
 
