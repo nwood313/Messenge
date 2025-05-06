@@ -1,6 +1,7 @@
 package com.coderscampus.messenge.service;
 
 import com.coderscampus.messenge.dto.Channel;
+import com.coderscampus.messenge.dto.Chat;
 import com.coderscampus.messenge.repository.ChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,38 +12,21 @@ import java.util.Optional;
 @Service
 public class ChannelService {
 
-    @Autowired
-    ChannelRepository channelRepository;
+    private final ChannelRepository channelRepo;
 
-
-    public ChannelService(ChannelRepository channelRepository) {
-        this.channelRepository = channelRepository;
+    public ChannelService(ChannelRepository channelRepo) {
+        this.channelRepo = channelRepo;
     }
 
-    public Channel createChannel(String name,Long channelId) {
-        Channel channel = new Channel();
-        channel.setName(name);
-        channel.setChannelId(channelId);
-        return channelRepository.save(channel);
+    public Channel findById(Long id) {
+        return channelRepo.findById(id);
     }
 
-    public Optional<Channel> getChannel(Long channelId) {
-        return channelRepository.findById(channelId);
-    }
-
-    public Optional<Channel> updateChannel(Long channelId, String name) {
-        return channelRepository.findById(channelId)
-                .map(channel -> {
-                    channel.setName(name);
-                    return channelRepository.save(channel);
-                });
-    }
-
-    public void deleteChannel(Long channelId) {
-        channelRepository.deleteById(channelId);
+    public Channel save(Channel channel, Chat chat) {
+        return channelRepo.saveMessage(channel, chat);
     }
 
     public List<Channel> findAll() {
-        return channelRepository.findAll();
+        return channelRepo.findAll();
     }
 }

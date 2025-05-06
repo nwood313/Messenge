@@ -2,7 +2,6 @@ package com.coderscampus.messenge.service;
 
 import com.coderscampus.messenge.dto.Chat;
 import com.coderscampus.messenge.repository.ChatRepository;
-import com.coderscampus.messenge.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,21 +9,17 @@ import java.util.List;
 @Service
 public class ChatService {
 
-    private final UserRepository userRepo;
-    private final ChatRepository chatRepo;
+    private final ChatRepository chatRepository;
 
-    public ChatService(UserRepository userRepo,
-                       ChatRepository chatRepo) {
-        this.userRepo = userRepo;
-        this.chatRepo = chatRepo;
+    public ChatService(ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
     }
 
-    public Chat sendChats(Chat chat) {
-        chatRepo.save(chat);
-        return chat;
+    public void save(Chat chat) {
+        chatRepository.save(chat);
     }
 
-    public List<Chat> getChats(Long channelId) {
-        return chatRepo.findByChannelId(channelId);
+    public List<Chat> findAll(){
+        return chatRepository.findAll();
     }
 }

@@ -1,28 +1,40 @@
 package com.coderscampus.messenge.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.coderscampus.messenge.dto.Channel;
+import com.coderscampus.messenge.service.ChannelService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import com.coderscampus.messenge.dto.Chat;
-import com.coderscampus.messenge.service.ChatService;
 
-@RestController
+
+
+@Controller
 public class ChatController {
-    @Autowired
-    private ChatService chatService;
 
-    @GetMapping("/chats/{channelId}")
-    public List<Chat> getChatsByChannelId(@PathVariable Long channelId) {
-        List<Chat> channelChats = chatService.getChats(channelId);
-        return channelChats;
+    private final ChannelService channelService;
+
+    public ChatController(ChannelService channelService) {
+        this.channelService = channelService;
     }
 
-    @PostMapping("/chats")
-    public Chat postChatsToUserId(@RequestBody Chat chat) {
-        return chatService.sendChats(chat);
+    @PostMapping("/channels/{channelId}")
+    @ResponseBody
+    public boolean saveMessage(@PathVariable Long channelId, @RequestBody Chat chat) {
+        try {
+            Channel channel = channelService.findById(channelId);
+            channelService.save(channel, chat);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/channels/{channelId}/get-messages")
+    public List<Channel> getChats(@PathVariable Long channelId) {
+        Channel channel = channelService.findById(channelId);
+        return channelService.findAll();
     }
 }

@@ -4,30 +4,49 @@ package com.coderscampus.messenge.web;
 import com.coderscampus.messenge.dto.User;
 import com.coderscampus.messenge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping ("/users")
+import java.util.List;
+
+@Controller
 public class UserController {
-    @Autowired
-    UserService userService;
 
-    @GetMapping("/sso-login")
-    public String getRegister(ModelMap model) {
-        User user = new User();
-        model.put("user", user);
+    private final UserService userService;
 
-        return "sso-logins";
-    }
-    @PostMapping ("/sso-logins")
-    public String postRegister (User user) {
-        userService.save(user);
-        return "redirect:/sso-logins";
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public User createUser (@RequestBody String name, String password) {
-        return userService.createUser(name, password);
+    @GetMapping("/")
+    public String redirectToWelcomePage() {
+        return "redirect:/welcome";
+    }
+
+    @GetMapping("/welcome")
+    public String getWelcomePage() {
+        return "welcome";
+    }
+
+    @PostMapping("/welcome")
+    public String postWelcomePage() {
+        return "redirect:/channels";
+    }
+
+    @ResponseBody
+    @GetMapping("/users")
+    public List<User> getUsers() {
+        return userService.findAll();
+    }
+
+    @ResponseBody
+    @PostMapping("/saveUser")
+    public User saveUser(@RequestBody User user) {
+        User existingUser = userService.userExists(user.getUsername());
+        if(existingUser != null) {
+            return existingUser;
+        }
+        return userService.save(user);
     }
 }

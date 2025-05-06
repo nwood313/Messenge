@@ -5,26 +5,28 @@ import com.coderscampus.messenge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
 
-    public User save (User user) {
+    public UserService(UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
+
+    public User save(User user) {
         return userRepo.save(user);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepo.findByUsername(username);
+    public User userExists(String username) {
+        return userRepo.userExists(username);
     }
 
-    public User createUser(String username, String password) {
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        return userRepo.save(newUser);
+    public List<User> findAll() {
+        return userRepo.findAll();
     }
+
 }
