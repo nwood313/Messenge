@@ -1,28 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Welcome</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" type="text/css" href="/css/welcome.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/boilerplate.css"/>
+    <title>Create Account</title>
+    <link rel="stylesheet" href="/css/welcome.css" />
 </head>
 <body>
-<div class="background-filter">
-    <form th:action="@{/welcome}" method="post">
-        <div class="input-container">
-            <div class="text-element-div">
-                <h1>Welcome!</h1>
-                <h3>It's Messenge Time!</h3>
+<div class="container">
+    <div class="left-panel">
+        <div class="signup-container">
+            <div class="left-panel">
+                <div class="logo">
+                    <img src="/images/logo.png" alt="Logo" class="logo-img" />
+                </div>
+
+    </div>
+
+    <div class="right-panel">
+        <h2>Create an account</h2>
+        <p class="login-text">Already have an account? <a href="#">Log in</a></p>
+        <form class="form">
+            <div class="form-row">
+                <input type="text" placeholder="First name" required />
+                <input type="text" placeholder="Last name" required />
             </div>
-            <div id="name-input-container">
-                <label for="name-input">NAME <span>*</span></label>
-                <input id="name-input" required type="text"/>
+            <input type="email" placeholder="Email" required />
+            <input type="password" placeholder="Enter your password" required />
+
+            <label class="checkbox">
+                <input type="checkbox" required />
+                I agree to the <a href="#">Terms & Conditions</a>
+            </label>
+
+            <button type="submit" class="submit-btn">Create account</button>
+
+            <div class="or">or register with</div>
+            <div class="social-buttons">
+                <button class="google-btn">Google</button>
+                <button class="apple-btn">Apple</button>
             </div>
-            <input id="submit-btn" type="submit" value="Messenge"/>
-        </div>
-    </form>
-    <script type="text/javascript" src="/js/welcome.js"></script>
+        </form>
+    </div>
 </div>
 </body>
 </html>
