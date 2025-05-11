@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up / Sign In</title>
+    <link rel="stylesheet" href="/css/welcome.css" />
+</head>
+<body>
+    <div class="landing-container">
+        <!-- Left side - Hero section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="logo-container">
+                    <img src="/images/logo.png" alt="Messenge Logo" class="hero-logo" />
+                </div>
+                <h1 class="hero-title">Welcome to Messenge!</h1>
+                <p class="hero-subtitle">Connect, Collaborate, Chat</p>
+                <div class="feature-list">
+                    <div class="feature">
+                        <span class="feature-icon">💬</span>
+                        <span>Real-time messaging</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">👥</span>
+                        <span>Multiple channels</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔒</span>
+                        <span>Secure communication</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side - Sign up form -->
+        <div class="form-section">
+            <div class="form-container">
+                <h2>Get Started</h2>
+                <p class="login-text">Already have an account? <a href="#">Sign in below</a></p>
+                <form class="form" action="/channel" method="post">
+                    <input type="text" name="username" placeholder="Username" required />
+                    <input type="password" name="password" placeholder="Enter your password" required />
+                    
+                    <select class="channel-select" name="channel" required>
+                        <option value="">Select a channel</option>
+                        <option value="1">Coder's Campus</option>
+                        <option value="2">Discord</option>
+                        <option value="3">Slack</option>
+                        <option value="4">Teams</option>
+                    </select>
+
+                    <label class="checkbox">
+                        <input type="checkbox" required />
+                        I agree to the <a href="#">Terms & Conditions</a>
+                    </label>
+
+                    <button type="submit" class="submit-btn">Get Started</button>
+
+                    <div class="or">or continue with</div>
+                    <div class="social-buttons">
+                        <button class="google-btn">Google</button>
+                        <button class="apple-btn">Apple</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

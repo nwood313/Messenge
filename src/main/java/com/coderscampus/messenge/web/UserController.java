@@ -30,4 +30,13 @@ public class UserController {
     public User createUser (@RequestBody String name, String password) {
         return userService.createUser(name, password);
     }
+
+    @PostMapping("/channel")
+    public String handleChannelSelection(@RequestParam String username, 
+                                       @RequestParam String password,
+                                       @RequestParam String channel) {
+        // Here you would typically save the user and their channel selection
+        // For now, we'll just redirect to the channel page
+        return "channel";
+    }
 }

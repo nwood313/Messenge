@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenge - Channel</title>
+    <link rel="stylesheet" href="/css/channel.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <img src="/images/logo.png" alt="Messenge Logo" class="sidebar-logo" />
+                </div>
+            </div>
+            <div class="user-profile">
+                <div class="profile-pic"></div>
+                <span class="username">Username</span>
+            </div>
+            <div class="channels-list">
+                <h3>Channels</h3>
+                <ul>
+                    <li class="active">Coder's Campus</li>
+                    <li>Discord</li>
+                    <li>Slack</li>
+                    <li>Teams</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="header-left">
+                    <img src="/images/logo.png" alt="Messenge Logo" class="header-logo" />
+                    <h2>Coder's Campus</h2>
+                </div>
+                <div class="header-actions">
+                    <button class="search-btn">🔍</button>
+                    <button class="settings-btn">⚙️</button>
+                </div>
+            </div>
+            
+            <div class="messages-container" id="messages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div class="message-input">
+                <input type="text" id="messageInput" placeholder="Type a message...">
+                <button class="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesContainer = document.getElementById('messages');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                messageElement.innerHTML = `
+                    <div class="message-content">
+                        <span class="message-username">You</span>
+                        <p>${message}</p>
+                        <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                    </div>
+                `;
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                input.value = '';
+            }
+        }
+
+        // Allow sending message with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 
