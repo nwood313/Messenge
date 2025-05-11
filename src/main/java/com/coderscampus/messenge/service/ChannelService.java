@@ -22,11 +22,25 @@ public class ChannelService {
         return channelRepo.findById(id);
     }
 
+    public Channel save(Channel channel) {
+        return channelRepo.save(channel);
+    }
+
     public Channel save(Channel channel, Chat chat) {
         return channelRepo.saveMessage(channel, chat);
     }
 
     public List<Channel> findAll() {
         return channelRepo.findAll();
+    }
+
+    public List<Channel> getAllChannels() {
+        return channelRepo.findAll();
+    }
+
+    public Channel createChannel(String name) {
+        Channel channel = new Channel();
+        channel.setName(name);
+        return channelRepo.save(channel);
     }
 }

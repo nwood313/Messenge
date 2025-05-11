@@ -25,7 +25,7 @@ public class ChannelRepository {
         createChannel("Coder's Campus", 1);
         createChannel("Discord", 2);
         createChannel("Slack", 3);
-        createChannel("Teams", 4);
+        createChannel("Skype", 4);
     }
 
     public Channel findById(Long id) {
@@ -33,8 +33,31 @@ public class ChannelRepository {
                 .findFirst().orElse(null);
     }
 
+    public Channel save(Channel channel) {
+        if (channel.getChannelId() == null) {
+            // Check if channel with same name exists
+            boolean channelExists = channelList.stream()
+                    .anyMatch(c -> c.getName().equalsIgnoreCase(channel.getName()));
+            
+            if (channelExists) {
+                throw new IllegalArgumentException("Channel with this name already exists");
+            }
+            
+            channel.setChannelId((long) (channelList.size() + 1));
+        }
+        
+        // If updating existing channel, remove old version
+        channelList.removeIf(c -> c.getChannelId().equals(channel.getChannelId()));
+        channelList.add(channel);
+        return channel;
+    }
+
     public Channel saveMessage(Channel channel, Chat chat) {
-        findById(channel.getChannelId()).getChats().add(chat);
+        Channel existingChannel = findById(channel.getChannelId());
+        if (existingChannel != null) {
+            existingChannel.getChats().add(chat);
+            return existingChannel;
+        }
         return channel;
     }
 

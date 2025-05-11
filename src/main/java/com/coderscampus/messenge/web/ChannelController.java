@@ -3,16 +3,16 @@ package com.coderscampus.messenge.web;
 import com.coderscampus.messenge.dto.Channel;
 import com.coderscampus.messenge.dto.User;
 import com.coderscampus.messenge.service.ChannelService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-
 public class ChannelController {
 
     private final ChannelService channelService;
@@ -22,22 +22,76 @@ public class ChannelController {
     }
 
     @GetMapping("/channels")
-    public String getChannels(@ModelAttribute("user") User user, ModelMap model) {
-        List<Channel> channels = channelService.findAll();
-        model.addAttribute("channels", channels);
-        return "channels";
-    }
-
-    @GetMapping("/channels/{channelId}")
-    public String getChannel(@PathVariable Long channelId, ModelMap model) {
-        Channel channel = channelService.findById(channelId);
-        if (channel == null) {
-            return "redirect:/error";
+    public String getChannels(ModelMap model) {
+        List<Channel> channels = channelService.getAllChannels();
+        
+        // Initialize default channels if none exist
+        if (channels.isEmpty()) {
+            channels.add(channelService.createChannel("general"));
+            channels.add(channelService.createChannel("random"));
+            channels.add(channelService.createChannel("help"));
         }
-        List<Channel> channels = channelService.findAll();
+        
         model.addAttribute("channels", channels);
-        model.addAttribute("channel", channel);
+        if (!channels.isEmpty()) {
+            model.addAttribute("currentChannel", channels.get(0));
+        }
         return "channel";
     }
 
+    @GetMapping("/channels/{channelId}")
+    public String getChannel(@PathVariable Long channelId, @ModelAttribute("user") User user, ModelMap model) {
+        Channel channel = channelService.findById(channelId);
+        if (channel == null) {
+            return "redirect:/channels";
+        }
+        List<Channel> channels = channelService.findAll();
+        model.addAttribute("channels", channels);
+        model.addAttribute("currentChannel", channel);
+        return "channel";
+    }
+
+    @PostMapping("/channels/create")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createChannel(@RequestBody Map<String, String> payload) {
+        String name = payload.get("name");
+        if (name == null || name.trim().isEmpty()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", "Channel name cannot be empty");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Channel channel = new Channel();
+        channel.setName(name.trim());
+        channel = channelService.save(channel);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("channelId", channel.getChannelId());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/channels/{channelId}/rename")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> renameChannel(@PathVariable Long channelId, @RequestBody Map<String, String> payload) {
+        String newName = payload.get("name");
+        if (newName == null || newName.trim().isEmpty()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", "Channel name cannot be empty");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Channel channel = channelService.findById(channelId);
+        if (channel != null) {
+            channel.setName(newName.trim());
+            channelService.save(channel);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

@@ -49,4 +49,22 @@ public class UserController {
         }
         return userService.save(user);
     }
+
+    @PostMapping("/channel")
+    public String handleChannelPost(@ModelAttribute User user, ModelMap model) {
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "channel";
+        }
+        return "redirect:/welcome";
+    }
+
+    @GetMapping("/channel")
+    public String getChannelPage(ModelMap model) {
+        User user = (User) model.get("user");
+        if (user == null) {
+            return "redirect:/welcome";
+        }
+        return "channel";
+    }
 }
