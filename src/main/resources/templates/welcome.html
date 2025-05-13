@@ -3,48 +3,61 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Create Account</title>
+    <title>Sign Up / Sign In</title>
     <link rel="stylesheet" href="/css/welcome.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="left-panel">
-            <div class="logo">
-                <img src="/images/logo.png" alt="Logo" class="logo-img" />
+    <div class="landing-container">
+        <!-- Left side - Hero section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="logo-container">
+                    <img src="/images/logo.png" alt="Messenge Logo" class="hero-logo" />
+                </div>
+                <h1 class="hero-title">Welcome to Messenge!</h1>
+                <p class="hero-subtitle">Connect, Collaborate, Chat</p>
+                <div class="feature-list">
+                    <div class="feature">
+                        <span class="feature-icon">💬</span>
+                        <span>Real-time messaging</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">👥</span>
+                        <span>Multiple channels</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔒</span>
+                        <span>Secure communication</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="right-panel">
-            <h2>Create an account</h2>
-            <p class="login-text">Already have an account? <a href="#">Log in</a></p>
-            <form action="/channel" method="post" class="login-form">
-                <div class="form-group">
-                    <input type="text" name="username" placeholder="Username" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
+        <!-- Right side - Sign up form -->
+        <div class="form-section">
+            <div class="form-container">
+                <h2>Get Started</h2>
+                <p class="login-text">Already have an account? <a href="#">Sign in below</a></p>
+                <form class="form" action="/login" method="post">
+                    <input type="text" name="username" placeholder="Username" required />
+                    <input type="password" name="password" placeholder="Enter your password" required />
+                    
+                    <select class="channel-select" name="channel" required>
+                        <option value="">Select a channel</option>
+                        <option value="1">Coder's Campus</option>
+                        <option value="2">Discord</option>
+                        <option value="3">Slack</option>
+                        <option value="4">Teams</option>
+                    </select>
 
-                <div class="checkbox-container">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">I agree to the <a href="/terms" target="_blank">Terms and Conditions</a></label>
-                </div>
+                    <label class="checkbox">
+                        <input type="checkbox" required />
+                        I agree to the <a href="#">Terms & Conditions</a>
+                    </label>
 
-                <button type="submit" class="submit-btn">Create account</button>
-
-                <div class="or">or register with</div>
-                <div class="social-buttons">
-                    <a href="/oauth2/authorization/google" class="google-btn">
-                        <i class="fab fa-google"></i>
-                        Google
-                    </a>
-                    <a href="/oauth2/authorization/github" class="github-btn">
-                        <i class="fab fa-github"></i>
-                        GitHub
-                    </a>
-                </div>
-            </form>
+                    <button type="submit" class="submit-btn">Get Started</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
