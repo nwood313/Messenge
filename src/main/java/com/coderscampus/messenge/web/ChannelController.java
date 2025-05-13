@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,14 @@ public class ChannelController {
     }
 
     @GetMapping("/channels")
-    public String getChannels(ModelMap model) {
+    public String getChannels(HttpSession session, ModelMap model) {
+        // Get user from session and add to model
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/welcome";
+        }
+        model.addAttribute("user", user);
+        
         List<Channel> channels = channelService.getAllChannels();
         
         // Initialize default channels if none exist

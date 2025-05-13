@@ -1,6 +1,5 @@
 package com.coderscampus.messenge.web;
 
-
 import com.coderscampus.messenge.dto.User;
 import com.coderscampus.messenge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +50,29 @@ public class UserController {
     }
 
     @PostMapping("/channel")
-    public String handleChannelPost(@ModelAttribute User user, ModelMap model) {
-        if (user != null) {
+    public String handleChannelPost(@RequestParam String username, @RequestParam String password, @RequestParam(required = false) String channel, ModelMap model) {
+        if (username != null && password != null) {
+            // Check if user exists in the database
+            User existingUser = userService.userExists(username);
+            User user;
+
+            if (existingUser != null) {
+                // Use existing user data
+                user = existingUser;
+            } else {
+                // Create a new user with default values
+                user = new User();
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setFirstName("User");
+                user.setLastName(username);
+                // Optionally save the new user
+                // userService.save(user);
+            }
+
             model.addAttribute("user", user);
-            return "channel";
+            // Redirect to channels endpoint which will load the channel data
+            return "redirect:/channels";
         }
         return "redirect:/welcome";
     }
