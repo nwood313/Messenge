@@ -3,7 +3,7 @@ const API_ENDPOINTS = {
     CHANNELS: '/channels',
     CREATE_CHANNEL: '/channels/create',
     RENAME_CHANNEL: (id) => `/channels/${id}/rename`,
-    SEND_MESSAGE: (id) => `/channels/${id}`
+    SEND_MESSAGE: (id) => `/channels/${id}/messages`
 };
 
 const ERROR_MESSAGES = {
@@ -173,7 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     body: JSON.stringify({
                         text: message,
                         momentInTime: new Date().toISOString(),
-                        sender: window.username
+                        sender: {
+                            username: window.username
+                        }
                     })
                 });
 

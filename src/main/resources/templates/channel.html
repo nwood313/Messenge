@@ -12,7 +12,9 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="server-header">
-                <img src="/images/logo.png" alt="Logo" class="server-logo">
+                <div class="logo-container">
+                    <img src="/images/logo.png" alt="Logo" class="server-logo">
+                </div>
                 <h2>Messenge</h2>
             </div>
             
@@ -60,10 +62,10 @@
                     <div class="user-avatar">
                         <i class="fas fa-user"></i>
                     </div>
-                    <span class="username" th:text="${user != null ? user.firstName + ' ' + user.lastName : 'Guest'}">User</span>
-                    <button class="logout-btn" onclick="window.location.href='/welcome'">
+                    <span class="username" th:text="${user != null ? user.username : 'Guest'}">User</span>
+                    <a href="/welcome" class="logout-btn">
                         <i class="fas fa-sign-out-alt"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -73,27 +75,24 @@
             <div class="channel-header">
                 <div class="channel-title">
                     <i class="fas fa-hashtag"></i>
-                    <h1 th:text="${currentChannel.name}">general</h1>
+                    <h1 th:text="${currentChannel.name}">Channel Name</h1>
                 </div>
                 <div class="channel-actions">
+                    <button class="action-btn"><i class="fas fa-search"></i></button>
                     <button class="action-btn"><i class="fas fa-bell"></i></button>
                     <button class="action-btn"><i class="fas fa-pin"></i></button>
                     <button class="action-btn"><i class="fas fa-users"></i></button>
-                    <div class="search-bar">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search">
-                    </div>
                 </div>
             </div>
 
             <div class="messages-container" id="messages">
-                <div th:each="chat : ${currentChannel.chats}" class="message">
+                <div class="message" th:each="chat : ${currentChannel.chats}">
                     <div class="message-avatar">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="message-content">
                         <div class="message-header">
-                            <span class="message-author" th:text="${chat.sender}">User</span>
+                            <span class="message-author" th:text="${chat.sender.username}">User</span>
                             <span class="message-time" th:text="${#temporals.format(chat.momentInTime, 'HH:mm')}">12:00 PM</span>
                         </div>
                         <div class="message-text" th:text="${chat.text}">
@@ -118,7 +117,7 @@
         <!-- No Channel Selected Message -->
         <div class="main-content no-channel" th:if="${currentChannel == null}">
             <div class="no-channel-message">
-                <h2>Welcome, <span th:text="${user.firstName + ' ' + user.lastName}">User</span>!</h2>
+                <h2>Welcome, <span th:text="${user != null ? user.username : 'Guest'}">User</span>!</h2>
                 <p>Please select a channel from the sidebar or create a new one to start chatting.</p>
                 <div class="default-channels" th:if="${channels != null && !channels.empty}">
                     <h3>Available Channels:</h3>
@@ -147,7 +146,7 @@
     </div>
 
     <script th:inline="javascript">
-        window.username = /*[[${user != null ? user.firstName + ' ' + user.lastName : 'Guest'}]]*/ 'User';
+        window.username = /*[[${user != null ? user.username : 'Guest'}]]*/ 'User';
         window.currentChannelId = /*[[${currentChannel != null ? currentChannel.channelId : null}]]*/ null;
     </script>
     <script src="/js/channel.js"></script>

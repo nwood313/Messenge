@@ -19,7 +19,7 @@ public class ChatController {
         this.channelService = channelService;
     }
 
-    @PostMapping("/channels/{channelId}")
+    @PostMapping("/channels/{channelId}/messages")
     @ResponseBody
     public boolean saveMessage(@PathVariable Long channelId, @RequestBody Chat chat) {
         try {
