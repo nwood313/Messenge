@@ -48,7 +48,14 @@ public class ChannelController {
     }
 
     @GetMapping("/channels/{channelId}")
-    public String getChannel(@PathVariable Long channelId, @ModelAttribute("user") User user, ModelMap model) {
+    public String getChannel(@PathVariable Long channelId, HttpSession session, ModelMap model) {
+        // Get user from session and add to model
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/welcome";
+        }
+        model.addAttribute("user", user);
+        
         Channel channel = channelService.findById(channelId);
         if (channel == null) {
             return "redirect:/channels";
@@ -101,5 +108,36 @@ public class ChannelController {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.notFound().build();
+    }
+    
+    @DeleteMapping("/channels/{channelId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteChannel(@PathVariable Long channelId) {
+        Channel channel = channelService.findById(channelId);
+        if (channel == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", "Channel not found");
+            return ResponseEntity.notFound().build();
+        }
+
+        // Try to delete the channel
+        try {
+            boolean deleted = channelService.deleteChannel(channelId);
+            Map<String, Object> response = new HashMap<>();
+            if (deleted) {
+                response.put("success", true);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("success", false);
+                response.put("error", "Cannot delete default channels");
+                return ResponseEntity.badRequest().body(response);
+            }
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", "Failed to delete channel: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
     }
 }

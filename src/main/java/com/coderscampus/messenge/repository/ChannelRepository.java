@@ -64,4 +64,8 @@ public class ChannelRepository {
     public List<Channel> findAll() {
         return channelList;
     }
+    
+    public boolean delete(Long channelId) {
+        return channelList.removeIf(channel -> channel.getChannelId().equals(channelId));
+    }
 }

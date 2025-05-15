@@ -3,7 +3,8 @@ const API_ENDPOINTS = {
     CHANNELS: '/channels',
     CREATE_CHANNEL: '/channels/create',
     RENAME_CHANNEL: (id) => `/channels/${id}/rename`,
-    SEND_MESSAGE: (id) => `/channels/${id}/messages`
+    SEND_MESSAGE: (id) => `/channels/${id}/messages`,
+    DELETE_CHANNEL: (id) => `/channels/${id}`
 };
 
 const ERROR_MESSAGES = {
@@ -12,6 +13,26 @@ const ERROR_MESSAGES = {
     INVALID_INPUT: 'Please provide valid input.',
     CHANNEL_EXISTS: 'A channel with this name already exists.'
 };
+
+// Theme Management
+function initTheme() {
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeIcon(theme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.querySelector('#theme-toggle i');
+    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
 
 // Utility functions
 function showError(message) {
@@ -37,8 +58,6 @@ async function fetchWithErrorHandling(url, options) {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
-                // Add CSRF token if needed
-                // 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
             }
         });
 
@@ -58,10 +77,36 @@ function joinChannel(channelId) {
     window.location.href = `/channels/${channelId}`;
 }
 
+async function deleteChannel(channelId) {
+    if (!confirm('Are you sure you want to delete this channel?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(API_ENDPOINTS.DELETE_CHANNEL(channelId), {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            window.location.href = '/channels';
+        } else {
+            showError(data.error || ERROR_MESSAGES.SERVER_ERROR);
+        }
+    } catch (error) {
+        showError(ERROR_MESSAGES.NETWORK_ERROR);
+        console.error("Error deleting channel:", error);
+    }
+}
+
 function editChannelName(event, channelId) {
     event.stopPropagation();
-    const span = event.target;
-    const currentName = span.textContent;
+    const channelTitle = document.querySelector('.channel-title h1');
+    const currentName = channelTitle.textContent;
     const input = document.createElement('input');
     input.type = 'text';
     input.value = currentName;
@@ -77,7 +122,7 @@ function editChannelName(event, channelId) {
         }
     };
     
-    span.parentNode.replaceChild(input, span);
+    channelTitle.parentNode.replaceChild(input, channelTitle);
     input.focus();
 }
 
@@ -110,12 +155,20 @@ function showNewChannelModal() {
 
 function closeNewChannelModal() {
     document.getElementById('newChannelModal').style.display = 'none';
-    // Clear form
     document.getElementById('newChannelName').value = '';
 }
 
 // Form handling
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize theme
+    initTheme();
+    
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+
     // New channel form
     const newChannelForm = document.getElementById('newChannelForm');
     if (newChannelForm) {
@@ -172,14 +225,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     body: JSON.stringify({
                         text: message,
-                        momentInTime: new Date().toISOString(),
-                        sender: {
-                            username: window.username
-                        }
+                        momentInTime: new Date().toISOString()
                     })
                 });
 
-                if (data) {
+                if (data && data.success) {
                     const messagesContainer = document.getElementById('messages');
                     const now = new Date();
                     const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -204,6 +254,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
                     messageInput.value = '';
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                } else if (data && !data.success) {
+                    showError(data.error || ERROR_MESSAGES.SERVER_ERROR);
                 }
             } catch (error) {
                 showError(ERROR_MESSAGES.NETWORK_ERROR);

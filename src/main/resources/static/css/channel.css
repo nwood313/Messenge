@@ -1,3 +1,22 @@
+/* Theme Variables */
+:root {
+    --bg-primary: #000000;
+    --bg-secondary: rgba(0, 0, 0, 0.2);
+    --text-primary: #fff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --accent-color: #3533cd;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] {
+    --bg-primary: #3533cd;
+    --bg-secondary: rgba(53, 51, 205, 0.2);
+    --text-primary: #fff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --accent-color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +25,8 @@
 
 body {
     font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(90deg, #000000, #3533cd);
-    color: #fff;
+    background: linear-gradient(90deg, var(--bg-primary), var(--accent-color));
+    color: var(--text-primary);
     height: 100vh;
     overflow: hidden;
 }
@@ -20,19 +39,20 @@ body {
 /* Sidebar Styles */
 .sidebar {
     width: 280px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-secondary);
     display: flex;
     flex-direction: column;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid var(--border-color);
 }
 
 .server-header {
     padding: 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-color);
+    height: 60px;
 }
 
 .logo-container {
@@ -47,6 +67,22 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    color: var(--text-primary);
+    background: var(--border-color);
 }
 
 .server-header h2 {
@@ -90,64 +126,66 @@ body {
 .channel {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.6);
-    transition: all 0.2s ease;
-    position: relative;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    margin: 0.2rem 0;
 }
 
 .channel:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: var(--border-color);
+    color: var(--text-primary);
 }
 
 .channel.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: var(--accent-color);
+    color: var(--text-primary);
 }
 
 .user-section {
-    padding: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 8px;
-    position: relative;
+    gap: 0.75rem;
 }
 
 .user-avatar {
     width: 32px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--accent-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.username {
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
 .logout-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     cursor: pointer;
-    padding: 8px;
+    padding: 0.5rem;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    margin-left: auto;
+    transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    background: var(--border-color);
 }
 
 .logout-btn i {
@@ -159,44 +197,61 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: #36393f;
+    background: var(--bg-primary);
+    position: relative;
 }
 
 .channel-header {
-    padding: 16px;
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-color);
+    height: 60px;
+    background: var(--bg-secondary);
 }
 
 .channel-title {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
 }
 
 .channel-title h1 {
     font-size: 1.2rem;
     font-weight: 600;
+    color: var(--text-primary);
 }
 
 .channel-actions {
     display: flex;
     align-items: center;
-    gap: 16px;
-    position: absolute;
-    right: 8px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    gap: 1rem;
 }
 
 .action-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    color: var(--text-primary);
+    background: var(--border-color);
+}
+
+.edit-channel, .delete-channel {
+    color: var(--accent-color);
+}
+
+.edit-channel:hover, .delete-channel:hover {
+    background: var(--accent-color);
+    color: var(--text-primary);
 }
 
 .search-bar {
@@ -222,9 +277,9 @@ body {
 
 .messages-container {
     flex: 1;
-    padding: 16px;
+    padding: 1rem;
     overflow-y: auto;
-    scroll-behavior: smooth;
+    margin-bottom: 80px; /* Add space for the message input */
 }
 
 .message {
@@ -268,8 +323,13 @@ body {
 }
 
 .message-input-container {
-    padding: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .message-input-wrapper {
@@ -323,12 +383,6 @@ body {
 
 .message-input::placeholder {
     color: rgba(255, 255, 255, 0.6);
-}
-
-/* Style for the username in the sidebar */
-.username {
-    font-weight: 500;
-    color: #fff;
 }
 
 /* Direct Messages Section */

@@ -16,6 +16,17 @@ public class ChannelService {
 
     public ChannelService(ChannelRepository channelRepo) {
         this.channelRepo = channelRepo;
+        initializeDefaultChannels();
+    }
+
+    private void initializeDefaultChannels() {
+        List<Channel> existingChannels = channelRepo.findAll();
+        if (existingChannels.isEmpty()) {
+            createChannel("general");
+            createChannel("random");
+            createChannel("help");
+            createChannel("announcements");
+        }
     }
 
     public Channel findById(Long id) {
@@ -42,5 +53,22 @@ public class ChannelService {
         Channel channel = new Channel();
         channel.setName(name);
         return channelRepo.save(channel);
+    }
+    
+    public boolean deleteChannel(Long channelId) {
+        // Don't allow deleting default channels
+        Channel channel = findById(channelId);
+        if (channel == null) {
+            return false;
+        }
+        
+        String channelName = channel.getName().toLowerCase();
+        if (channelName.equals("general") || channelName.equals("random") || 
+            channelName.equals("help") || channelName.equals("announcements")) {
+            return false;
+        }
+        
+        channelRepo.delete(channelId);
+        return true;
     }
 }

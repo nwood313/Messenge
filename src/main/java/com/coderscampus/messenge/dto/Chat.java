@@ -1,18 +1,17 @@
 package com.coderscampus.messenge.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 
 @Entity
 public class Chat {
+    private Long messageId;
     private String text;
     private LocalDateTime momentInTime;
     private Long channelId;
+    private User sender;
 
     public Chat(){
 
@@ -21,6 +20,13 @@ public class Chat {
         this.text= text;
         this.momentInTime = momentInTime;
         this.channelId= channelId;
+    }
+
+    public Chat(String text, LocalDateTime momentInTime, Long channelId, User sender) {
+        this.text = text;
+        this.momentInTime = momentInTime;
+        this.channelId = channelId;
+        this.sender = sender;
     }
 
     public String getText() {
@@ -38,18 +44,39 @@ public class Chat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getMessageId() {
+        return messageId;
+    }
+    
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
+    }
+    
     public Long getChannelId() {
         return channelId;
     }
     public void setChannelId(Long channelId) {
         this.channelId = channelId;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
     @Override
     public String toString() {
         return "Chat{" +
-                "text='" + text + '\'' +
-                ", momentIntime=" + momentInTime +
+                "messageId=" + messageId +
+                ", text='" + text + '\'' +
+                ", momentInTime=" + momentInTime +
                 ", channelId=" + channelId +
+                ", sender=" + (sender != null ? sender.getUsername() : "null") +
                 '}';
     }
 }

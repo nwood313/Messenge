@@ -1,6 +1,7 @@
 package com.coderscampus.messenge.web;
 
 import com.coderscampus.messenge.dto.User;
+import com.coderscampus.messenge.service.ChannelService;
 import com.coderscampus.messenge.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -13,24 +14,38 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ChannelService channelService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ChannelService channelService) {
         this.userService = userService;
+        this.channelService = channelService;
     }
 
     @GetMapping("/")
-    public String redirectToWelcomePage() {
+    public String redirectToWelcomePage(HttpSession session) {
+        // If user is already logged in, redirect to channels
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            return "redirect:/channels";
+        }
         return "redirect:/welcome";
     }
 
     @GetMapping("/welcome")
-    public String getWelcomePage() {
+    public String getWelcomePage(HttpSession session, ModelMap model) {
+        // Check if user is already logged in
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+        // Add channels for dropdown
+        model.addAttribute("channels", channelService.getAllChannels());
         return "welcome";
     }
 
     @PostMapping("/welcome")
     public String postWelcomePage() {
-        return "redirect:/channels";
+        return "redirect:/channel";
     }
 
     @ResponseBody
