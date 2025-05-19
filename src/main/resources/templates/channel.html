@@ -78,14 +78,11 @@
                     <h1 th:text="${currentChannel.name}">Channel Name</h1>
                 </div>
                 <div class="channel-actions">
-                    <button class="action-btn edit-channel" th:onclick="'editChannelName(event, ' + ${currentChannel.channelId} + ')'" title="Edit Channel Name">
-                        <i class="fas fa-pencil-alt"></i>
+                    <button class="action-btn edit-channel" th:onclick="'editChannelName(event, ' + ${currentChannel.channelId} + ')'">
+                        <i class="fas fa-edit"></i>
                     </button>
-                    <button class="action-btn delete-channel" th:onclick="'deleteChannel(' + ${currentChannel.channelId} + ')'" title="Delete Channel">
+                    <button class="action-btn delete-channel" th:onclick="'deleteChannel(' + ${currentChannel.channelId} + ')'">
                         <i class="fas fa-trash"></i>
-                    </button>
-                    <button class="action-btn" title="Search Messages">
-                        <i class="fas fa-search"></i>
                     </button>
                     <button class="action-btn" title="Notification Settings">
                         <i class="fas fa-bell"></i>
@@ -122,24 +119,22 @@
                         <i class="fas fa-plus-circle"></i>
                     </button>
                     <input type="text" id="message-input" th:placeholder="'Message #' + ${currentChannel.name}" class="message-input" required>
-                    <button type="button" class="input-action-btn" title="Send Gift">
-                        <i class="fas fa-gift"></i>
-                    </button>
                     <button type="button" class="input-action-btn" title="Add GIF">
                         <i class="fas fa-gif"></i>
                     </button>
-                    <button type="button" class="input-action-btn" title="Add Emoji">
+                    <button type="button" class="input-action-btn emoji-picker-btn" title="Add Emoji">
                         <i class="fas fa-smile"></i>
                     </button>
                     <button type="submit" class="input-action-btn send-btn" title="Send Message">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
+                <emoji-picker id="emoji-picker" class="emoji-picker" style="display: none;"></emoji-picker>
             </div>
         </div>
 
-        <!-- No Channel Selected Message -->
-        <div class="main-content no-channel" th:if="${currentChannel == null}">
+        <!-- Welcome Message -->
+        <div class="main-content no-channel" th:if="${currentChannel == null && user != null}">
             <div class="no-channel-message">
                 <h2>Welcome, <span th:text="${user.username}">User</span>!</h2>
                 <p>Please select a channel from the sidebar or create a new one to start chatting.</p>
@@ -169,6 +164,8 @@
         </div>
     </div>
 
+    <!-- Add emoji-picker-element library -->
+    <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.12.1/index.js" type="module"></script>
     <script th:inline="javascript">
         window.username = /*[[${user != null ? user.username : 'Guest'}]]*/ 'User';
         window.currentChannelId = /*[[${currentChannel != null ? currentChannel.channelId : null}]]*/ null;

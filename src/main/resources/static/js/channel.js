@@ -158,11 +158,122 @@ function closeNewChannelModal() {
     document.getElementById('newChannelName').value = '';
 }
 
-// Form handling
+// Add these constants at the top
+const POLL_INTERVAL = 500; // 500ms polling interval
+let lastMessageId = 0;
+
+// Add this function for message polling
+async function pollNewMessages() {
+    if (!window.currentChannelId) return;
+    
+    try {
+        const response = await fetch(`/channels/${window.currentChannelId}/messages?lastId=${lastMessageId}`);
+        const data = await response.json();
+        
+        if (data.messages && data.messages.length > 0) {
+            data.messages.forEach(message => {
+                if (message.messageId > lastMessageId) {
+                    lastMessageId = message.messageId;
+                    appendMessage(message, false);
+                    
+                    // Show notification if message is from another user
+                    if (message.sender && message.sender.username !== window.username) {
+                        showNotification(message);
+                    }
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error polling messages:', error);
+    }
+}
+
+// Add notification function
+function showNotification(message) {
+    if (!("Notification" in window)) return;
+    
+    if (Notification.permission === "granted") {
+        new Notification("New Message", {
+            body: `${message.sender.username}: ${message.text}`,
+            icon: "/images/logo.png"
+        });
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission();
+    }
+}
+
+// Message handling
+function getInitials(username) {
+    return username
+        .split(' ')
+        .map(word => word[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+}
+
+function appendMessage(message) {
+    const messagesContainer = document.getElementById('messages');
+    const messageDiv = document.createElement('div');
+    const isOwnMessage = message.sender.username === window.username;
+    
+    messageDiv.className = `message ${isOwnMessage ? 'own-message' : ''}`;
+    
+    // Parse the ISO string and convert to local time
+    const time = new Date(message.momentInTime);
+    const formattedTime = time.toLocaleTimeString('en-US', { 
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true 
+    }).replace(/^0/, ''); // Remove leading zero from hour
+    
+    messageDiv.innerHTML = `
+        <div class="message-avatar">
+            ${getInitials(message.sender.username)}
+        </div>
+        <div class="message-content">
+            <div class="message-header">
+                <span class="message-author">${message.sender.username}</span>
+                <span class="message-time">${formattedTime}</span>
+            </div>
+            <div class="message-text">${message.text}</div>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// Update message form handler
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme
     initTheme();
     
+    // Initialize emoji picker
+    const emojiPicker = document.querySelector('emoji-picker');
+    const emojiButton = document.querySelector('.emoji-picker-btn');
+    const messageInput = document.getElementById('message-input');
+    
+    if (emojiPicker && emojiButton && messageInput) {
+        emojiButton.addEventListener('click', () => {
+            const picker = document.getElementById('emoji-picker');
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+        });
+
+        emojiPicker.addEventListener('emoji-click', event => {
+            messageInput.value += event.detail.unicode;
+            messageInput.focus();
+        });
+
+        // Close emoji picker when clicking outside
+        document.addEventListener('click', (e) => {
+            const picker = document.getElementById('emoji-picker');
+            if (!picker.contains(e.target) && !emojiButton.contains(e.target)) {
+                picker.style.display = 'none';
+            }
+        });
+    }
+
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
@@ -206,62 +317,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Message form
     const messageForm = document.getElementById('message-form');
-    if (messageForm) {
+    if (messageForm && messageInput) {
         messageForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const submitButton = this.querySelector('button[type="submit"]');
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value.trim();
-            const channelId = this.dataset.channelId;
             
-            if (!message) {
-                return;
-            }
-
-            showLoading(submitButton);
+            const channelId = this.dataset.channelId;
+            const text = messageInput.value.trim();
+            
+            if (!text) return;
             
             try {
-                const data = await fetchWithErrorHandling(API_ENDPOINTS.SEND_MESSAGE(channelId), {
+                const now = new Date();
+                const response = await fetch(`/channels/${channelId}/messages`, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
-                        text: message,
-                        momentInTime: new Date().toISOString()
+                        text: text,
+                        momentInTime: now.toISOString(),
+                        channelId: channelId
                     })
                 });
-
-                if (data && data.success) {
-                    const messagesContainer = document.getElementById('messages');
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    
-                    const messageHTML = `
-                        <div class="message">
-                            <div class="message-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="message-content">
-                                <div class="message-header">
-                                    <span class="message-author">${window.username}</span>
-                                    <span class="message-time">Today at ${timeString}</span>
-                                </div>
-                                <div class="message-text">
-                                    ${message}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
+                
+                if (response.ok) {
                     messageInput.value = '';
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                } else if (data && !data.success) {
-                    showError(data.error || ERROR_MESSAGES.SERVER_ERROR);
+                    // Don't append message here, wait for the fetch interval
                 }
             } catch (error) {
-                showError(ERROR_MESSAGES.NETWORK_ERROR);
-            } finally {
-                hideLoading(submitButton);
+                console.error('Error sending message:', error);
             }
         });
+    }
+
+    // Fetch messages periodically
+    if (window.currentChannelId) {
+        setInterval(async () => {
+            try {
+                const response = await fetch(`/channels/${window.currentChannelId}/get-messages`);
+                if (response.ok) {
+                    const channels = await response.json();
+                    const currentChannel = channels.find(c => c.channelId === window.currentChannelId);
+                    if (currentChannel) {
+                        const messagesContainer = document.getElementById('messages');
+                        messagesContainer.innerHTML = '';
+                        currentChannel.chats.forEach(chat => appendMessage(chat));
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        }, 500); // Fetch every 2 seconds
     }
 }); 

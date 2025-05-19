@@ -38,22 +38,21 @@
             <div class="form-container">
                 <h2>Get Started</h2>
                 <p class="login-text">Already have an account? <a href="#">Sign in below</a></p>
-                <form class="form" action="/channel" method="post">
+                <form class="form" th:action="@{/channels}" method="post">
                     <input type="text" name="username" placeholder="Username" required />
                     <input type="password" name="password" placeholder="Enter your password" required />
                     
-                    <select class="channel-select" name="channel" required>
+                    <select class="channel-select" name="channelId" required>
                         <option value="">Select a channel</option>
-                        <option value="1">Coder's Campus</option>
-                        <option value="2">Discord</option>
-                        <option value="3">Slack</option>
-                        <option value="4">Teams</option>
+                        <option th:each="channel : ${channels}" 
+                                th:value="${channel.channelId}" 
+                                th:text="${channel.name}">
+                        </option>
                     </select>
 
                     <label class="checkbox">
                         <input type="checkbox" required />
                         I agree to the <a href="/terms">Terms & Conditions</a>
-
                     </label>
 
                     <button type="submit" class="submit-btn">Get Started</button>

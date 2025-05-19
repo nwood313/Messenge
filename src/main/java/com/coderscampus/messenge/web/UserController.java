@@ -64,11 +64,11 @@ public class UserController {
         return userService.save(user);
     }
 
-    @PostMapping("/channel")
-    public String handleChannelPost(
+    @PostMapping("/channels")
+    public String handleUserRegistration(
             @RequestParam String username,
             @RequestParam String password,
-            @RequestParam(required = false) String channel,
+            @RequestParam Long channelId,
             HttpSession session,
             ModelMap model) {
 
@@ -82,11 +82,12 @@ public class UserController {
                 userService.save(user);
             }
 
-            // ✅ Store user in session so ChannelController can access it
+            // Store user in session
             session.setAttribute("user", user);
             model.addAttribute("user", user);
 
-            return "redirect:/channels"; // ✅ Works with your current ChannelController
+            // Redirect to the selected channel
+            return "redirect:/channels/" + channelId;
         }
 
         return "redirect:/welcome";

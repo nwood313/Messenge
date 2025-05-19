@@ -6,6 +6,8 @@
     --text-secondary: rgba(255, 255, 255, 0.7);
     --accent-color: #3533cd;
     --border-color: rgba(255, 255, 255, 0.1);
+    --own-message-bg: linear-gradient(135deg, #007AFF, #5856D6);
+    --other-message-bg: linear-gradient(135deg, #2C2C2E, #1C1C1E);
 }
 
 [data-theme="light"] {
@@ -15,6 +17,8 @@
     --text-secondary: rgba(255, 255, 255, 0.7);
     --accent-color: #ffffff;
     --border-color: rgba(255, 255, 255, 0.1);
+    --own-message-bg: linear-gradient(135deg, #007AFF, #5856D6);
+    --other-message-bg: linear-gradient(135deg, #E9E9EB, #D1D1D6);
 }
 
 * {
@@ -284,22 +288,55 @@ body {
 
 .message {
     display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 80%;
+    position: relative;
+}
+
+.message.own-message {
+    margin-right: auto;
+    flex-direction: row;
+}
+
+.message:not(.own-message) {
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+
+.message-content {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1.2rem;
+    max-width: 70%;
+    position: relative;
+    color: var(--text-primary);
+}
+
+.message.own-message .message-content {
+    background: var(--own-message-bg);
+    border-top-left-radius: 0.2rem;
+}
+
+.message:not(.own-message) .message-content {
+    background: var(--other-message-bg);
+    border-top-right-radius: 0.2rem;
 }
 
 .message-avatar {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    width: 32px;
+    height: 32px;
+    background: var(--accent-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.message-content {
-    flex: 1;
+    flex-shrink: 0;
+    color: white;
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
 
 .message-header {
@@ -307,10 +344,12 @@ body {
     align-items: center;
     gap: 8px;
     margin-bottom: 4px;
+    font-size: 0.9rem;
 }
 
 .message-author {
     font-weight: 600;
+    color: var(--text-primary);
 }
 
 .message-time {
@@ -320,6 +359,7 @@ body {
 
 .message-text {
     line-height: 1.4;
+    word-wrap: break-word;
 }
 
 .message-input-container {
@@ -624,4 +664,20 @@ body {
 
 .channel:hover .edit-channel-btn {
     opacity: 1;
+}
+
+.emoji-picker {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 0.5rem;
+    z-index: 1000;
+    --background: var(--bg-primary);
+    --indicator-color: var(--accent-color);
+    --num-columns: 8;
+    --outline-color: var(--border-color);
+    --category-emoji-padding: 0.5rem;
+    --category-emoji-size: 1.5rem;
+    --category-font-color: var(--text-primary);
+    --category-font-size: 0.8rem;
 } 
