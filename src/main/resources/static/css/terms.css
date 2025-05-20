@@ -81,10 +81,10 @@ li {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: #fff;
+    color: #ffffff;
     text-decoration: none;
     padding: 0.75rem 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(42, 34, 190);
     border-radius: 4px;
     transition: all 0.2s ease;
 }

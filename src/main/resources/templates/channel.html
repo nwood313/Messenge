@@ -104,7 +104,8 @@
                     <div class="message-content">
                         <div class="message-header">
                             <span class="message-author" th:text="${chat.sender?.username ?: 'Unknown'}">User</span>
-                            <span class="message-time" th:text="${#temporals.format(chat.momentInTime, 'HH:mm')}">12:00 PM</span>
+                            <span class="message-time" th:text="${#temporals.format(chat.momentInTime, 'HH:mm')}"></span>
+
                         </div>
                         <div class="message-text" th:text="${chat.text}">
                             Welcome to Messenge! This is the general channel.
@@ -115,13 +116,10 @@
 
             <div class="message-input-container">
                 <form id="message-form" class="message-input-wrapper" th:data-channel-id="${currentChannel.channelId}">
-                    <button type="button" class="input-action-btn" title="Add Attachment">
-                        <i class="fas fa-plus-circle"></i>
-                    </button>
+                    
+                    
                     <input type="text" id="message-input" th:placeholder="'Message #' + ${currentChannel.name}" class="message-input" required>
-                    <button type="button" class="input-action-btn" title="Add GIF">
-                        <i class="fas fa-gif"></i>
-                    </button>
+                    
                     <button type="button" class="input-action-btn emoji-picker-btn" title="Add Emoji">
                         <i class="fas fa-smile"></i>
                     </button>

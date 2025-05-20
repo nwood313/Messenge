@@ -339,6 +339,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         channelId: channelId
                     })
                 });
+                const timestamp = document.createElement('span');
+                timestamp.className = 'timestamp';
+                timestamp.textContent = new Date(message.timestamp).toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                });
                 
                 if (response.ok) {
                     messageInput.value = '';

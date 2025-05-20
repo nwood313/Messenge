@@ -6,7 +6,7 @@
     --text-secondary: rgba(255, 255, 255, 0.7);
     --accent-color: #3533cd;
     --border-color: rgba(255, 255, 255, 0.1);
-    --own-message-bg: linear-gradient(135deg, #007AFF, #5856D6);
+    --own-message-bg: linear-gradient(90deg, #007AFF, #5856D6);
     --other-message-bg: linear-gradient(135deg, #2C2C2E, #1C1C1E);
 }
 
@@ -29,8 +29,7 @@
 
 body {
     font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(90deg, var(--bg-primary), var(--accent-color));
-    color: var(--text-primary);
+    background: linear-gradient(90deg, var(--bg-primary), var(--accent-color));    color: var(--text-primary);
     height: 100vh;
     overflow: hidden;
 }
