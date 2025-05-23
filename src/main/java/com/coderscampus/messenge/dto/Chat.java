@@ -1,28 +1,26 @@
 package com.coderscampus.messenge.dto;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
+import java.time.OffsetDateTime;
 
 @Entity
 public class Chat {
     private Long messageId;
     private String text;
-    private LocalDateTime momentInTime;
+    private OffsetDateTime momentInTime;
     private Long channelId;
     private User sender;
 
     public Chat(){
 
     }
-    public Chat(String text, LocalDateTime momentInTime, Long channelId) {
+    public Chat(String text, OffsetDateTime momentInTime, Long channelId) {
         this.text= text;
         this.momentInTime = momentInTime;
         this.channelId= channelId;
     }
 
-    public Chat(String text, LocalDateTime momentInTime, Long channelId, User sender) {
+    public Chat(String text, OffsetDateTime momentInTime, Long channelId, User sender) {
         this.text = text;
         this.momentInTime = momentInTime;
         this.channelId = channelId;
@@ -35,10 +33,10 @@ public class Chat {
     public void setText(String text) {
         this.text = text;
     }
-    public LocalDateTime getMomentInTime() {
+    public OffsetDateTime getMomentInTime() {
         return momentInTime;
     }
-    public void setMomentInTime(LocalDateTime momentInTime) {
+    public void setMomentInTime(OffsetDateTime momentInTime) {
         this.momentInTime = momentInTime;
     }
 

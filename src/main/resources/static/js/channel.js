@@ -250,7 +250,6 @@ function appendMessage(message) {
     `;
     
     messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 // Update message form handler
@@ -337,6 +336,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 const now = new Date();
+                // Format date to match Java's OffsetDateTime format (yyyy-MM-ddTHH:mm:ssXXX)
+                const formattedDate = now.toISOString(); // This includes the timezone offset
+                
                 const response = await fetch(`/channels/${channelId}/messages`, {
                     method: 'POST',
                     headers: {
@@ -344,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     body: JSON.stringify({
                         text: text,
-                        momentInTime: now.toISOString(),
+                        momentInTime: formattedDate,
                         channelId: channelId
                     })
                 });
