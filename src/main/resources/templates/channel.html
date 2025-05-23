@@ -78,17 +78,18 @@
                     <h1 th:text="${currentChannel.name}">Channel Name</h1>
                 </div>
                 <div class="channel-actions">
-                    <button class="action-btn edit-channel" th:onclick="'editChannelName(event, ' + ${currentChannel.channelId} + ')'">
+                    <button class="action-btn edit-channel" th:onclick="'editChannelName(event, ' + ${currentChannel.channelId} + ')'" title="Edit Channel Name">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="action-btn delete-channel" th:onclick="'deleteChannel(' + ${currentChannel.channelId} + ')'">
+                    <button class="action-btn delete-channel" th:onclick="'deleteChannel(' + ${currentChannel.channelId} + ')'" title="Delete Channel">
                         <i class="fas fa-trash"></i>
                     </button>
-                    <button class="action-btn" title="Notification Settings">
+                    <button class="action-btn notification-btn" title="Notification Settings">
                         <i class="fas fa-bell"></i>
+                        <div class="notification-indicator"></div>
                     </button>
                     <button class="action-btn" title="Pinned Messages">
-                        <i class="fas fa-pin"></i>
+                        <i class="fas fa-thumbtack"></i>
                     </button>
                     <button class="action-btn" title="Show Members">
                         <i class="fas fa-users"></i>
@@ -104,8 +105,7 @@
                     <div class="message-content">
                         <div class="message-header">
                             <span class="message-author" th:text="${chat.sender?.username ?: 'Unknown'}">User</span>
-                            <span class="message-time" th:text="${#temporals.format(chat.momentInTime, 'HH:mm')}"></span>
-
+                            <span class="message-time" th:text="${#temporals.format(chat.momentInTime, 'HH:mm')}">12:00 PM</span>
                         </div>
                         <div class="message-text" th:text="${chat.text}">
                             Welcome to Messenge! This is the general channel.
@@ -117,7 +117,7 @@
             <div class="message-input-container">
                 <form id="message-form" class="message-input-wrapper" th:data-channel-id="${currentChannel.channelId}">
                     
-                    
+                    </button>
                     <input type="text" id="message-input" th:placeholder="'Message #' + ${currentChannel.name}" class="message-input" required>
                     
                     <button type="button" class="input-action-btn emoji-picker-btn" title="Add Emoji">

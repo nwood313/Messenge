@@ -214,10 +214,19 @@ function getInitials(username) {
 
 function appendMessage(message) {
     const messagesContainer = document.getElementById('messages');
-    const messageDiv = document.createElement('div');
     const isOwnMessage = message.sender.username === window.username;
     
-    messageDiv.className = `message ${isOwnMessage ? 'own-message' : ''}`;
+    // Check if we should group with previous message
+    const lastMessage = messagesContainer.lastElementChild;
+    const shouldGroup = lastMessage && 
+                       lastMessage.classList.contains('message') &&
+                       lastMessage.dataset.sender === message.sender.username &&
+                       (new Date(message.momentInTime) - new Date(lastMessage.dataset.timestamp)) < 300000; // 5 minutes
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isOwnMessage ? 'own-message' : ''} ${shouldGroup ? 'grouped' : ''}`;
+    messageDiv.dataset.sender = message.sender.username;
+    messageDiv.dataset.timestamp = message.momentInTime;
     
     // Parse the ISO string and convert to local time
     const time = new Date(message.momentInTime);
@@ -228,14 +237,14 @@ function appendMessage(message) {
     }).replace(/^0/, ''); // Remove leading zero from hour
     
     messageDiv.innerHTML = `
-        <div class="message-avatar">
+        ${!shouldGroup ? `<div class="message-avatar">
             ${getInitials(message.sender.username)}
-        </div>
+        </div>` : ''}
         <div class="message-content">
-            <div class="message-header">
+            ${!shouldGroup ? `<div class="message-header">
                 <span class="message-author">${message.sender.username}</span>
                 <span class="message-time">${formattedTime}</span>
-            </div>
+            </div>` : ''}
             <div class="message-text">${message.text}</div>
         </div>
     `;
@@ -339,17 +348,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         channelId: channelId
                     })
                 });
-                const timestamp = document.createElement('span');
-                timestamp.className = 'timestamp';
-                timestamp.textContent = new Date(message.timestamp).toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit',
-                    hour12: false 
-                });
-                
+
                 if (response.ok) {
-                    messageInput.value = '';
-                    // Don't append message here, wait for the fetch interval
+                    messageInput.value = ''; // Clear the input
+                    messageInput.focus(); // Keep focus on input
                 }
             } catch (error) {
                 console.error('Error sending message:', error);
@@ -374,6 +376,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.error('Error fetching messages:', error);
             }
-        }, 500); // Fetch every 2 seconds
+        }, 500); // Fetch every 500 milliseconds
     }
 }); 
