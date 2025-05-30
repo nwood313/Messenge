@@ -1,4 +1,3 @@
-/* Theme Variables */
 :root {
     --bg-primary:#1b1b86;
     --bg-secondary:rgb(0, 0, 0);  
@@ -264,6 +263,7 @@ body {
 .notification-btn {
     position: relative;
 }
+
 .notification-indicator {
     position: absolute;
     top: -5px;
