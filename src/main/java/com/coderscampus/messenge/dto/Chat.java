@@ -5,10 +5,14 @@ import java.time.OffsetDateTime;
 
 @Entity
 public class Chat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
     private String text;
     private OffsetDateTime momentInTime;
     private Long channelId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User sender;
 
     public Chat(){
@@ -40,8 +44,6 @@ public class Chat {
         this.momentInTime = momentInTime;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getMessageId() {
         return messageId;
     }
@@ -57,8 +59,6 @@ public class Chat {
         this.channelId = channelId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     public User getSender() {
         return sender;
     }
