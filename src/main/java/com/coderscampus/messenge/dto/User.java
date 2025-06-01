@@ -1,16 +1,23 @@
 package com.coderscampus.messenge.dto;
 
-import jakarta.persistence.*;
+import java.util.List;
 
-@Entity
-//@Table(name = "users")
 public class User {
-
     private Long userId;
     private String username;
     private String password;
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    // Optional for future channel mapping
+    private List<Channel> channels;
+
+    public User() {}
+
+    public User(Long userId, String username, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -18,7 +25,7 @@ public class User {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-//    @Column(unique = true)
+
     public String getUsername() {
         return username;
     }
@@ -35,15 +42,20 @@ public class User {
         this.password = password;
     }
 
+    public List<Channel> getChannels() {
+        return channels;
+    }
 
+    public void setChannels(List<Channel> channels) {
+        this.channels = channels;
+    }
 
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='[PROTECTED]'" +
                 '}';
     }
-
-
 }

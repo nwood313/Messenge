@@ -20,14 +20,6 @@ public class ChannelRepository {
         channelList.add(channel);
     }
 
-    @PostConstruct
-    public void generateChannelList() {
-        createChannel("Coder's Campus", 1);
-        createChannel("Discord", 2);
-        createChannel("Slack", 3);
-        createChannel("Skype", 4);
-    }
-
     public Channel findById(Long id) {
         return channelList.stream().filter(channel -> channel.getChannelId() == id)
                 .findFirst().orElse(null);

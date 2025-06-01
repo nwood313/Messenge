@@ -7,16 +7,16 @@ import java.util.List;
 @Entity
 public class Channel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long channelId;
 
     private String name;
 
-    @ManyToMany(mappedBy = "channels")
+    //@ManyToMany(mappedBy = "channels")
     private List<User> users;
 
-    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "channel", cascade = CascadeType.ALL)
     private List<Chat> chats = new ArrayList<>();
 
     public Channel() {

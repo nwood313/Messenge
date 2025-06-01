@@ -36,33 +36,12 @@
                 </ul>
             </div>
 
-            <div class="direct-messages-section">
-                <div class="section-header">
-                    <h3>Direct Messages</h3>
-                    <button class="add-dm-btn"><i class="fas fa-plus"></i></button>
-                </div>
-                <ul class="dm-list">
-                    <li class="dm-item">
-                        <div class="user-status online"></div>
-                        <span>John Doe</span>
-                    </li>
-                    <li class="dm-item">
-                        <div class="user-status idle"></div>
-                        <span>Jane Smith</span>
-                    </li>
-                    <li class="dm-item">
-                        <div class="user-status offline"></div>
-                        <span>Mike Hawk</span>
-                    </li>
-                </ul>
-            </div>
-
             <div class="user-section">
                 <div class="user-info">
                     <div class="user-avatar">
                         <i class="fas fa-user"></i>
                     </div>
-                    <span class="username" th:text="${user != null ? user.username : 'Guest'}">User</span>
+                    <span class="username" th:text="${user != null ? user.username : ''}">User</span>
                     <a href="/welcome" class="logout-btn" title="Sign Out">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
@@ -83,16 +62,6 @@
                     </button>
                     <button class="action-btn delete-channel" th:onclick="'deleteChannel(' + ${currentChannel.channelId} + ')'" title="Delete Channel">
                         <i class="fas fa-trash"></i>
-                    </button>
-                    <button class="action-btn notification-btn" title="Notification Settings">
-                        <i class="fas fa-bell"></i>
-                        <div class="notification-indicator"></div>
-                    </button>
-                    <button class="action-btn" title="Pinned Messages">
-                        <i class="fas fa-thumbtack"></i>
-                    </button>
-                    <button class="action-btn" title="Show Members">
-                        <i class="fas fa-users"></i>
                     </button>
                 </div>
             </div>
@@ -119,15 +88,10 @@
                     
                     </button>
                     <input type="text" id="message-input" th:placeholder="'Message #' + ${currentChannel.name}" class="message-input" required>
-                    
-                    <button type="button" class="input-action-btn emoji-picker-btn" title="Add Emoji">
-                        <i class="fas fa-smile"></i>
-                    </button>
                     <button type="submit" class="input-action-btn send-btn" title="Send Message">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
-                <emoji-picker id="emoji-picker" class="emoji-picker" style="display: none;"></emoji-picker>
             </div>
         </div>
 
@@ -162,12 +126,6 @@
         </div>
     </div>
 
-    <!-- Add emoji-picker-element library -->
-    <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.12.1/index.js" type="module"></script>
-    <script th:inline="javascript">
-        window.username = /*[[${user != null ? user.username : 'Guest'}]]*/ 'User';
-        window.currentChannelId = /*[[${currentChannel != null ? currentChannel.channelId : null}]]*/ null;
-    </script>
     <script src="/js/channel.js"></script>
 </body>
 </html> 

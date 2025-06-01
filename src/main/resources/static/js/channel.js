@@ -256,31 +256,8 @@ function appendMessage(message) {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme
     initTheme();
+     
     
-    // Initialize emoji picker
-    const emojiPicker = document.querySelector('emoji-picker');
-    const emojiButton = document.querySelector('.emoji-picker-btn');
-    const messageInput = document.getElementById('message-input');
-    
-    if (emojiPicker && emojiButton && messageInput) {
-        emojiButton.addEventListener('click', () => {
-            const picker = document.getElementById('emoji-picker');
-            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
-        });
-
-        emojiPicker.addEventListener('emoji-click', event => {
-            messageInput.value += event.detail.unicode;
-            messageInput.focus();
-        });
-
-        // Close emoji picker when clicking outside
-        document.addEventListener('click', (e) => {
-            const picker = document.getElementById('emoji-picker');
-            if (!picker.contains(e.target) && !emojiButton.contains(e.target)) {
-                picker.style.display = 'none';
-            }
-        });
-    }
 
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');

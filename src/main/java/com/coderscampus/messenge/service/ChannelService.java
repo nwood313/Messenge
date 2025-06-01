@@ -22,10 +22,10 @@ public class ChannelService {
     private void initializeDefaultChannels() {
         List<Channel> existingChannels = channelRepo.findAll();
         if (existingChannels.isEmpty()) {
-            createChannel("general");
-            createChannel("random");
-            createChannel("help");
-            createChannel("announcements");
+            createChannel("Coder's Campus");
+            createChannel("Discord");
+            createChannel("Slack");
+            createChannel("Skype");
         }
     }
 
